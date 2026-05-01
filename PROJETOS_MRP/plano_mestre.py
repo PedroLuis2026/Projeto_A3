@@ -26,3 +26,39 @@ def menu_principal(lista):
             continue
         break
     return opçao
+
+def criar_pedido(produtos): 
+    separação()
+    print("NOVO PEDIDO DE PRODUÇÃO".center(50))
+    separação()
+    print("PRODUTOS DISPONIVEIS".center(50))
+    for i , produto in enumerate(produtos.keys(), 1):
+        print(f"\033[34m{i}: {produto}\033[m")
+    while True:
+        escolha_produto = input("Nome do Produto: ").title().strip()
+        if escolha_produto not in produtos:
+            print("\033[31mPRODUTO NÃO ENCONTRADO!\033[m")
+            continue
+        break
+    while True:
+        try:
+            quantidade = int(input("Quantidade: "))
+            if quantidade <= 0:
+                print("\033[31mDIGITE UM NÚMERO VÁLIDO!\033[m")
+                continue
+        except (ValueError,KeyboardInterrupt):
+            print("\033[31mDIGITE UM NÚMERO VÁLIDO!\033[m")
+            continue
+        break
+    while True:
+        try:
+            semana = int(input("Semana de entrega(1-8): "))
+            if semana < 1 or semana > 8:
+                print("\033[33mA SEMANA DEVE ESTAR ENTRE 1 E 8!\033[m")
+                continue
+        except (ValueError,KeyboardInterrupt):
+            print("\033[31mDIGITE UM NÚMERO VÁLIDO!\033[m")
+            continue
+        break
+    return {'produto': escolha_produto, 'quantidade': quantidade, 'semana': semana}
+
