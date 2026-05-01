@@ -61,4 +61,4 @@ def criar_pedido(produtos):
             continue
         break
     return {'produto': escolha_produto, 'quantidade': quantidade, 'semana': semana}
-
+    
