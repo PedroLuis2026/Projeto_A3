@@ -16,7 +16,7 @@ def iniciar_arquivo():
             f.write("Rodinhas|40un|3sem\n\n")
             
             f.write("===== PRODUTOS =====\n")
-            f.write("Cadeira|Assento:1un,Encosto:1un,Eixo:1un,Rodinhas:5un\n\n")
+            f.write("Cadeira|Assento:1un;Encosto:1un;Eixo:1un;Rodinhas:5un\n\n")
 
             f.write("===== HISTORICO PEDIDOS =====\n")
             f.write("===== ORDENS COMPRA =====\n")
