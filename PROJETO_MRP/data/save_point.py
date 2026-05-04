@@ -51,7 +51,7 @@ def carregar_componentes():
 def carregar_produtos():
     
     produtos = {}
-
+    
     with open(arquivo, 'r', encoding='utf-8') as f:
         linhas = f.readlines()
 
@@ -70,12 +70,12 @@ def carregar_produtos():
             partes = linha.split("|")
             nome_produto = partes[0]
             receita_str = partes[1]
-        receita = {}
-        for item in receita_str.split(","):
-            comp, qntd = item.split(":")
-            receita[comp] = int(qntd)
+            receita = {}
+            for item in receita_str.split(";"):
+                comp, qntd = item.split(":")
+                receita[comp] = int(qntd.replace("un", ""))
             produtos[nome_produto] = receita
-        return produtos
+    return produtos
 
 def salvar_estoque(componentes):
 
@@ -108,8 +108,8 @@ def adicionar_pedido(produto, quantidade, semana):
         conteudo = f.read()
 
     conteudo = conteudo.replace(
-        "=== HISTORICO PEDIDOS ===\n",
-        f"=== HISTORICO PEDIDOS ===\n{linha}"
+        "===== HISTORICO PEDIDOS =====\n",
+        f"===== HISTORICO PEDIDOS =====\n{linha}"
     )
     with open(arquivo, 'w', encoding='utf-8') as f:
         f.write(conteudo)
@@ -119,7 +119,7 @@ def adicionar_ordem_compra(componente, quantidade, semana):
     with open(arquivo, 'r', encoding='utf-8') as f:
         conteudo = f.read()
 
-    conteudo = (
+    conteudo = conteudo.replace(
         "===== ORDENS COMPRA =====\n",
         f"===== ORDENS COMPRA =====\n{linha}"
     )
@@ -142,12 +142,11 @@ def adicionar_movimentaçao(tipo, componente, quantidade, observaçao):
         f.write(conteudo)
 
 def exibir_historico():
-
     with open(arquivo, 'r', encoding='utf-8') as f:
         linhas = f.readlines()
 
     plano_mestre.separação()
-    print("HISTÓRICO DE PEDIDOS")
+    print("HISTÓRICO DE PEDIDOS".center(60))
     plano_mestre.separação()
     
     lendo_historico = False
@@ -162,5 +161,6 @@ def exibir_historico():
                 break
         if lendo_historico and linha:
             partes = linha.split("|")
-            print(f"{partes[0]} - {partes[1]} un. - Semana {partes[2]}") 
+            print(f"{partes['produto']} - {partes['quantidade']} un. - Semana {partes['semana']}") 
+    
     plano_mestre.separação() 
