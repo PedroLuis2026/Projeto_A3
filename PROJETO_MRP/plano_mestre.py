@@ -6,41 +6,44 @@ def separação():
 
 def menu_principal(lista):
     separação()
-    print("SISTEMA MRP".center(60))
+    print("\033[1mSISTEMA MRP\033[m".center(64))
     separação()
-    print(f"{lista[0]} - Novo Pedido de Produção")
-    print(f"{lista[1]} - Ver Cronograma de Compras")
-    print(f"{lista[2]} - Consultar Estoque Atual")         
-    print(f"{lista[3]} - Histórico de Pedidos")         
-    print(f"{lista[4]} - Histórico de Movimentações")         
-    print(f"{lista[5]} - Sair")
+    print(f"{lista[0]} - \033[1mNovo Pedido de Produção\033[m")
+    print(f"{lista[1]} - \033[1mVer Cronograma de Compras\033[m")
+    print(f"{lista[2]} - \033[1mConsultar Estoque Atual\033[m")         
+    print(f"{lista[3]} - \033[1mHistórico de Pedidos\033[m")         
+    print(f"{lista[4]} - \033[1mHistórico de Movimentações\033[m")         
+    print(f"{lista[5]} - \033[1mSair\033[m")
     separação()
     while True:
         try:
             opçao = input("Digite a sua opção: ")
             if opçao not in ["1","2","3","4","5","6"] or not opçao:
-                print("OPÇÃO INEXISTENTE!")
+                print("\033[31mOPÇÃO INEXISTENTE!\033[m")
                 continue
         except KeyboardInterrupt:
-            print("ERRO, NÃO INTERROMPA FORÇADAMENTE O PROGRAMA!")
+            print("\033[31mERRO, NÃO INTERROMPA FORÇADAMENTE O PROGRAMA!\033[m")
             continue
         break
     return opçao
 
 def criar_pedido(produtos): 
     separação()
-    print("NOVO PEDIDO DE PRODUÇÃO".center(60))
-    separação()
     print("\033[33mPRODUTOS DISPONIVEIS\033[m".center(65))
+    separação()
     print("-" * 60)
     for i , produto in enumerate(produtos.keys(), 1):
         print(f"\033[34m{i} : {produto}\033[m")
     print("-" * 60)
     while True:
-        escolha_produto = input("Nome do Produto: ").title().strip()
-        if escolha_produto not in produtos:
-            print("\033[31mPRODUTO NÃO ENCONTRADO!\033[m")
-            continue
+        try:
+            escolha_produto = input("Nome do Produto: ").title().strip()
+            if escolha_produto not in produtos:
+                print("\033[31mPRODUTO NÃO ENCONTRADO!\033[m")
+                continue
+        except KeyboardInterrupt:
+            print("\033[31mERRO, NÃO INTERROMPA FORÇADAMENTE O PROGRAMA!\033[m") 
+            continue   
         break
     while True:
         try:
@@ -69,7 +72,7 @@ def processar_pedido(componentes, produtos):
     pedido = criar_pedido(produtos)
     if not pedido:
         print("\033[31mERRO NO RECONHECIMENTO DO PEDIDO!\033[m")
-    
+        return   
     from engine import motor_calculos
     ordens = motor_calculos.calcular_mrp(
         produtos[pedido['produto']],
@@ -81,22 +84,23 @@ def processar_pedido(componentes, produtos):
         print("\033[31mERRO NO PRAZO DE ENTREGA!\033[m")
     else:
         separação()
-        print("RESUMO DO PEDIDO".center(50))
+        print("RESUMO DO PEDIDO".center(60))
+        separação()
         print(f"Produto: {pedido['produto']}")
         print(f"Quantidade: {pedido['quantidade']}")
         print(f"Entrega: Semana {pedido['semana']}")
         print(f"ORDENS DE COMPRAS GERADAS:")
-        separação
+        separação()
         for ordem in ordens:
             if ordem['necessidade'] > 0:
                 print(f"{ordem['nome']:<15} | {ordem['necessidade']:>5} un. | {ordem['semana_compra']} sem.")
             else:
                 print("\033[31mERRO, NÃO EXISTE NECESSIDADE DE COMPRAR MAIS COMPONENTES!\033[m")
                 break
-        separação
+        separação()
         while True:    
             confirmação =  input("Corfirmar (s/n): ").strip().lower()
-            if confirmação not in "sn":
+            if confirmação not in ["s", "n"]:
                 print("\033[31mERRO, DIGITE S(SIM) OU N(NÃO)!\033[m")
                 continue
             break
@@ -129,9 +133,9 @@ def processar_pedido(componentes, produtos):
             print("\033[31mPedido cancelado!\033[m")            
 
 def exibir_estoque(componentes):
-    separação
+    separação()
     print("ESTOQUE ATUAL".center(50))
-    separação
+    separação()
     for nome, dados in componentes.items():
         print(f"{nome:<15} | {dados['estoque']:>5} un. | Prazo: {dados['lead_time']} sem.")
-    separação
+    separação()

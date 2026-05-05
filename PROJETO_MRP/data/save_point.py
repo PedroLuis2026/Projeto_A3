@@ -161,6 +161,6 @@ def exibir_historico():
                 break
         if lendo_historico and linha:
             partes = linha.split("|")
-            print(f"{partes['produto']} - {partes['quantidade']} un. - Semana {partes['semana']}") 
+            print(f"{partes[0]} - {partes[1].replace("un", "")} un. - Semana {partes[2]}") 
     
     plano_mestre.separação() 
