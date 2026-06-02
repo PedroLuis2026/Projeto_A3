@@ -27,3 +27,6 @@ def main():
             print("ENCERRANDO PROGRAMA!".center(60))
             plano_mestre.separação()
             break
+
+if __name__ == "main":
+    main()
