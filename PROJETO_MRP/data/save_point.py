@@ -127,7 +127,7 @@ def adicionar_ordem_compra(componente, quantidade, semana):
     with open(arquivo, 'w', encoding='utf-8') as f:
         f.write(conteudo)
 
-def adicionar_movimentaçao(tipo, componente, quantidade, observaçao):
+def adicionar_movimentacao(tipo, componente, quantidade, observaçao):
     linha = f"{tipo}|{componente}|{quantidade}un|{observaçao}\n"
 
     with open(arquivo, 'r', encoding='utf-8') as f:
@@ -164,3 +164,30 @@ def exibir_historico():
             print(f"{partes[0]} - {partes[1].replace("un", "")} un. - Semana {partes[2]}") 
     
     plano_mestre.separação() 
+
+def exibir_movimentacoes():
+    with open(arquivo, 'r', encoding='utf-8') as f:
+        linhas = f.readlines()
+    
+    print("\n" + "="*80)
+    print("HISTÓRICO DE MOVIMENTAÇÕES")
+    print("="*80)
+    print(f"{'Tipo':<10} | {'Componente':<15} | {'Qtd':<6} | Obs")
+    print("-"*80)
+    
+    lendo_mov = False
+    for linha in linhas:
+        linha = linha.strip()
+        
+        if linha == "===== MOVIMENTACOES =====":
+            lendo_mov = True
+            continue
+        elif linha.startswith("====="):
+            if lendo_mov:
+                break
+        
+        if lendo_mov and linha:
+            partes = linha.split("|")
+            print(f"{partes[0]:<10} | {partes[1]:<15} | {partes[2]:<6} | {partes[3]}")
+    
+    print("="*80)
